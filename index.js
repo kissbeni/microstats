@@ -60,7 +60,7 @@ statEmitter.stop = function() {
 }
 
 function isPlatformSupported() {
-    return process.env.platform !== 'other';
+    return ['win32', 'darwin', 'linux'].indexOf(process.platform) > -1;
 }
 
 
