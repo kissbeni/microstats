@@ -17,9 +17,10 @@ npm install microstats
 const microstats = require('microstats')
 
 // Event emits
-microstats.on('memory', function(value) { console.log('MEMORY:', memory }
-microstats.on('cpu', function(value) { console.log('CPU:', memory }
-microstats.on('disk', function(value) { console.log('DISK:', memory }
+microstats.on('memory', function(value) { console.log(`MEMORY: ${value}`) });
+microstats.on('cpu', function(value) { console.log(`CPU: ${value}`) });
+microstats.on('disk', function(value) { console.log(`DISK: ${value}`) });
+microstats.on('error', function(value) { console.log(`ERROR: ${value}`) });
 
 let options = {}
 microstats.start(options, function(err) {
