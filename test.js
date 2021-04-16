@@ -1,6 +1,14 @@
 'use strict';
 var microstats = require('.');
 
+microstats.on('before', function() {
+    console.log('BEFORE');
+});
+
+microstats.on('after', function() {
+    console.log('AFTER');
+});
+
 microstats.on('memory', function(value) {
     console.log('MEMORY:', value);
 });

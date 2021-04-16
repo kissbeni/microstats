@@ -41,10 +41,13 @@ statEmitter.start = function(options, cb) {
             return;
         }
         
-        stats.memory(statEmitter, { threshold: memusedThreshold });
-        stats.cpu(statEmitter, { threshold: cpuloadThreshold });
-        stats.disk(statEmitter, { threshold: diskusedThreshold, diskfilesystems: diskfilesystems, mounts: mounts });
-        
+        statEmitter.emit('before', {});
+        Promise.all([
+            stats.memory(statEmitter, { threshold: memusedThreshold }),
+            stats.cpu(statEmitter, { threshold: cpuloadThreshold }),
+            stats.disk(statEmitter, { threshold: diskusedThreshold, diskfilesystems: diskfilesystems, mounts: mounts })
+        ]).then(() => statEmitter.emit('after', {}));
+
         if(frequency.mode === 'once') {
             clearInterval(check);
         }
