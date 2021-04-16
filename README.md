@@ -1,8 +1,5 @@
 # microstats
 
-[![NPM Version][npm-image]][npm-url]
-[![Linux Build][travis-image]][travis-url]
-
 > microstats is a node utility that can be used to monitor OS events such as CPU utilization, memory and disk consumption. It can be used to 'alert' the user when user defined thresholds are breached. Currently available for linux, macos and windows. 
 
 ## Install
@@ -13,22 +10,22 @@ npm install microstats
 
 ## Usage
 
-```bash
+```javascript
 const microstats = require('microstats')
 
 // Event emits
-microstats.on('memory', function(value) { console.log(`MEMORY: ${value}`) });
-microstats.on('cpu', function(value) { console.log(`CPU: ${value}`) });
-microstats.on('disk', function(value) { console.log(`DISK: ${value}`) });
-microstats.on('error', function(value) { console.log(`ERROR: ${value}`) });
+microstats.on('memory', value => { console.log('MEMORY: ${value}') })
+microstats.on('cpu',    value => { console.log('CPU: ${value}') })
+microstats.on('disk',   value => { console.log('DISK: ${value}') })
+microstats.on('error',  value => { console.log('ERROR: ${value}') })
 
 let options = {}
 microstats.start(options, function(err) {
-  if(err) console.log(err);
+  if (err) console.log(err);
 })
 
-...
-...
+// ...
+
 microstats.stop();
 ```
 
@@ -38,19 +35,19 @@ microstats.stop();
 
 - 'once': Will check all stats, report current numbers and stop.
 
-```bash
+```javascript
 let options = { frequency: 'once' }
 ```
 
 - 'timer': Will check all stats periodically on a user defined timer and report each check.
 
-```bash
+```javascript
 let options = { frequency: '5s' }
 ```
 
 Values for frequency could be something like
 
-```bash
+```javascript
 '5s' // 5 seconds
 '5m' // 5 minutes
 '5h' // 5 hours
@@ -58,11 +55,11 @@ Values for frequency could be something like
 
 - 'onalert': Will check all stats periodically, but report only when the numbers exceed user defined threshold.
 
-```bash
+```javascript
 options = {
-  frequency: 'onalert'
-  memoryalert: { used: '>60%' }
-  cpualert: { load: '>80%' }
+  frequency: 'onalert',
+  memoryalert: { used: '>60%' },
+  cpualert: { load: '>80%' },
   diskalert: { used: '>70%' }
 }
 ```
@@ -73,9 +70,9 @@ If 'onalert' is used without specifying the thresholds, a default threshold valu
 diskalert options can be customized to specify the disks / mounts to be monitored. If no 'filesystem(s)' or 'mount(s)' are specified, all the available disks will be considered. 
 
 - linux/macos example(s)
-```bash
+```javascript
 options = {
-  frequency: 'once'
+  frequency: 'once',
   diskalert: { 
     used: '>70%',
     mount: '/'
@@ -83,19 +80,19 @@ options = {
 }
 
 options = {
-  frequency: 'once'
-  diskalert: { 
+  frequency: 'once',
+  diskalert: {
     used: '>70%',
-    mounts: ['/home', /dev']
+    mounts: ['/home', '/dev']
   }
 }
 ```
 
 - windows example(s)
-```bash
+```javascript
 options = {
-  frequency: 'once'
-  diskalert: { 
+  frequency: 'once',
+  diskalert: {
     used: '>70%',
     filesystem: 'C:'
   }
@@ -103,9 +100,9 @@ options = {
 
 options = {
   frequency: 'once'
-  diskalert: { 
+  diskalert: {
     used: '>70%',
-    filesystems: ['C:','D:']
+    filesystems: ['C:', 'D:']
   }
 }
 ```
@@ -129,8 +126,3 @@ CPU: { loadpct: 39.28, userpct: 10.71, syspct: 28.57, idlepct: 60.71 }
 ## License
 
 [MIT](http://vjpr.mit-license.org)
-
-[npm-image]: https://img.shields.io/npm/v/microstats.svg
-[npm-url]: https://npmjs.org/package/microstats
-[travis-image]: https://travis-ci.org/sv-code/microstats.svg?branch=master
-[travis-url]: https://travis-ci.org/sv-code/microstats
